@@ -1,0 +1,50 @@
+f35eff162e2c58e36020d2267a5d0fb0
+/**
+ * Prompt for deep AI Code Review, Complexity Analysis & Interview Readiness Scoring.
+ */
+function buildCodeReviewPrompt({
+  problemTitle,
+  problemDescription,
+  language,
+  code,
+  constraints,
+  optimalTime,
+  optimalSpace
+}) {
+  const systemPrompt = `SYSTEM: CODE_REVIEW
+You are a Principal Software Engineer & FAANG DSA Interviewer.
+Review the candidate's code submission. Analyze correctness, big-O complexity, architectural quality, subtle bugs, edge cases, and interview readiness.
+Return strictly valid JSON with no markdown wrapping.`;
+  const userPrompt = `Problem: ${problemTitle}
+Description: ${problemDescription}
+Expected Optimal Time: ${optimalTime || 'O(N)'}
+Expected Optimal Space: ${optimalSpace || 'O(1)'}
+Language: ${language}
+
+Candidate Submitted Code:
+\`\`\`${language}
+${code}
+\`\`\`
+
+Generate a JSON object with:
+{
+  "isCorrect": boolean,
+  "timeComplexity": "e.g. O(N log N)",
+  "spaceComplexity": "e.g. O(1)",
+  "patternDetected": "e.g. Two Pointer / Sliding Window",
+  "qualityScore": number (0 to 10),
+  "interviewScore": number (0 to 10),
+  "critique": "Constructive pedagogical feedback on code style and logic flow",
+  "optimizations": "Specific steps to reach optimal theoretical complexity",
+  "edgeCaseWarnings": "Edge cases that might cause WA or Runtime Exceptions",
+  "alternativeApproaches": "Alternative algorithms/data structures to solve this problem"
+}`;
+  return {
+    systemPrompt,
+    userPrompt
+  };
+}
+module.exports = {
+  buildCodeReviewPrompt
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJidWlsZENvZGVSZXZpZXdQcm9tcHQiLCJwcm9ibGVtVGl0bGUiLCJwcm9ibGVtRGVzY3JpcHRpb24iLCJsYW5ndWFnZSIsImNvZGUiLCJjb25zdHJhaW50cyIsIm9wdGltYWxUaW1lIiwib3B0aW1hbFNwYWNlIiwic3lzdGVtUHJvbXB0IiwidXNlclByb21wdCIsIm1vZHVsZSIsImV4cG9ydHMiXSwic291cmNlcyI6WyJjb2RlUmV2aWV3UHJvbXB0LmpzIl0sInNvdXJjZXNDb250ZW50IjpbIi8qKlxuICogUHJvbXB0IGZvciBkZWVwIEFJIENvZGUgUmV2aWV3LCBDb21wbGV4aXR5IEFuYWx5c2lzICYgSW50ZXJ2aWV3IFJlYWRpbmVzcyBTY29yaW5nLlxuICovXG5mdW5jdGlvbiBidWlsZENvZGVSZXZpZXdQcm9tcHQoeyBwcm9ibGVtVGl0bGUsIHByb2JsZW1EZXNjcmlwdGlvbiwgbGFuZ3VhZ2UsIGNvZGUsIGNvbnN0cmFpbnRzLCBvcHRpbWFsVGltZSwgb3B0aW1hbFNwYWNlIH0pIHtcbiAgY29uc3Qgc3lzdGVtUHJvbXB0ID0gYFNZU1RFTTogQ09ERV9SRVZJRVdcbllvdSBhcmUgYSBQcmluY2lwYWwgU29mdHdhcmUgRW5naW5lZXIgJiBGQUFORyBEU0EgSW50ZXJ2aWV3ZXIuXG5SZXZpZXcgdGhlIGNhbmRpZGF0ZSdzIGNvZGUgc3VibWlzc2lvbi4gQW5hbHl6ZSBjb3JyZWN0bmVzcywgYmlnLU8gY29tcGxleGl0eSwgYXJjaGl0ZWN0dXJhbCBxdWFsaXR5LCBzdWJ0bGUgYnVncywgZWRnZSBjYXNlcywgYW5kIGludGVydmlldyByZWFkaW5lc3MuXG5SZXR1cm4gc3RyaWN0bHkgdmFsaWQgSlNPTiB3aXRoIG5vIG1hcmtkb3duIHdyYXBwaW5nLmA7XG5cbiAgY29uc3QgdXNlclByb21wdCA9IGBQcm9ibGVtOiAke3Byb2JsZW1UaXRsZX1cbkRlc2NyaXB0aW9uOiAke3Byb2JsZW1EZXNjcmlwdGlvbn1cbkV4cGVjdGVkIE9wdGltYWwgVGltZTogJHtvcHRpbWFsVGltZSB8fCAnTyhOKSd9XG5FeHBlY3RlZCBPcHRpbWFsIFNwYWNlOiAke29wdGltYWxTcGFjZSB8fCAnTygxKSd9XG5MYW5ndWFnZTogJHtsYW5ndWFnZX1cblxuQ2FuZGlkYXRlIFN1Ym1pdHRlZCBDb2RlOlxuXFxgXFxgXFxgJHtsYW5ndWFnZX1cbiR7Y29kZX1cblxcYFxcYFxcYFxuXG5HZW5lcmF0ZSBhIEpTT04gb2JqZWN0IHdpdGg6XG57XG4gIFwiaXNDb3JyZWN0XCI6IGJvb2xlYW4sXG4gIFwidGltZUNvbXBsZXhpdHlcIjogXCJlLmcuIE8oTiBsb2cgTilcIixcbiAgXCJzcGFjZUNvbXBsZXhpdHlcIjogXCJlLmcuIE8oMSlcIixcbiAgXCJwYXR0ZXJuRGV0ZWN0ZWRcIjogXCJlLmcuIFR3byBQb2ludGVyIC8gU2xpZGluZyBXaW5kb3dcIixcbiAgXCJxdWFsaXR5U2NvcmVcIjogbnVtYmVyICgwIHRvIDEwKSxcbiAgXCJpbnRlcnZpZXdTY29yZVwiOiBudW1iZXIgKDAgdG8gMTApLFxuICBcImNyaXRpcXVlXCI6IFwiQ29uc3RydWN0aXZlIHBlZGFnb2dpY2FsIGZlZWRiYWNrIG9uIGNvZGUgc3R5bGUgYW5kIGxvZ2ljIGZsb3dcIixcbiAgXCJvcHRpbWl6YXRpb25zXCI6IFwiU3BlY2lmaWMgc3RlcHMgdG8gcmVhY2ggb3B0aW1hbCB0aGVvcmV0aWNhbCBjb21wbGV4aXR5XCIsXG4gIFwiZWRnZUNhc2VXYXJuaW5nc1wiOiBcIkVkZ2UgY2FzZXMgdGhhdCBtaWdodCBjYXVzZSBXQSBvciBSdW50aW1lIEV4Y2VwdGlvbnNcIixcbiAgXCJhbHRlcm5hdGl2ZUFwcHJvYWNoZXNcIjogXCJBbHRlcm5hdGl2ZSBhbGdvcml0aG1zL2RhdGEgc3RydWN0dXJlcyB0byBzb2x2ZSB0aGlzIHByb2JsZW1cIlxufWA7XG5cbiAgcmV0dXJuIHsgc3lzdGVtUHJvbXB0LCB1c2VyUHJvbXB0IH07XG59XG5cbm1vZHVsZS5leHBvcnRzID0geyBidWlsZENvZGVSZXZpZXdQcm9tcHQgfTtcbiJdLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBO0FBQ0EsU0FBU0EscUJBQXFCQSxDQUFDO0VBQUVDLFlBQVk7RUFBRUMsa0JBQWtCO0VBQUVDLFFBQVE7RUFBRUMsSUFBSTtFQUFFQyxXQUFXO0VBQUVDLFdBQVc7RUFBRUM7QUFBYSxDQUFDLEVBQUU7RUFDM0gsTUFBTUMsWUFBWSxHQUFHO0FBQ3ZCO0FBQ0E7QUFDQSxzREFBc0Q7RUFFcEQsTUFBTUMsVUFBVSxHQUFHLFlBQVlSLFlBQVk7QUFDN0MsZUFBZUMsa0JBQWtCO0FBQ2pDLHlCQUF5QkksV0FBVyxJQUFJLE1BQU07QUFDOUMsMEJBQTBCQyxZQUFZLElBQUksTUFBTTtBQUNoRCxZQUFZSixRQUFRO0FBQ3BCO0FBQ0E7QUFDQSxRQUFRQSxRQUFRO0FBQ2hCLEVBQUVDLElBQUk7QUFDTjtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0EsRUFBRTtFQUVBLE9BQU87SUFBRUksWUFBWTtJQUFFQztFQUFXLENBQUM7QUFDckM7QUFFQUMsTUFBTSxDQUFDQyxPQUFPLEdBQUc7RUFBRVg7QUFBc0IsQ0FBQyIsImlnbm9yZUxpc3QiOltdfQ==

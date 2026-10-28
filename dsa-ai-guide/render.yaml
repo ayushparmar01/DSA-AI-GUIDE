@@ -1,0 +1,53 @@
+services:
+  # 1. Python AI Microservice (FastAPI)
+  - type: web
+    name: dsa-ai-service
+    env: python
+    rootDir: ai-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.5
+      - key: LEAKAGE_THRESHOLD
+        value: "0.80"
+      - key: LLM_PROVIDER
+        value: mock
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+
+  # 2. Express Backend API
+  - type: web
+    name: dsa-backend-api
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/server.js
+    healthCheckPath: /api/health
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: CLIENT_URL
+        value: https://dsa-ai-guide.vercel.app
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: AI_SERVICE_URL
+        fromService:
+          type: web
+          name: dsa-ai-service
+          property: host
+      - key: JUDGE0_API_URL
+        value: https://judge0-ce.p.rapidapi.com
+      - key: JUDGE0_API_KEY
+        sync: false

@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # MongoDB Persistence
+  mongodb:
+    image: mongo:6.0
+    container_name: dsa_mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: dsa_ai_guide
+
+  # Python 3 FastAPI Microservice
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: dsa_ai_service
+    restart: always
+    ports:
+      - '8000:8000'
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - LEAKAGE_THRESHOLD=0.80
+      - LLM_PROVIDER=mock
+    depends_on:
+      - mongodb
+
+  # Node.js Express Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dsa_backend
+    restart: always
+    ports:
+      - '5001:5001'
+    environment:
+      - NODE_ENV=development
+      - PORT=5001
+      - CLIENT_URL=http://localhost:5173
+      - MONGO_URI=mongodb://mongodb:27017/dsa_ai_guide
+      - JWT_SECRET=dev_jwt_secret_key_dsa_guide_2026
+      - AI_SERVICE_URL=http://ai-service:8000
+      - JUDGE0_API_URL=http://localhost:2358
+    depends_on:
+      - mongodb
+      - ai-service
+
+  # React Vite Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dsa_frontend
+    restart: always
+    ports:
+      - '5173:80'
+    depends_on:
+      - backend
+
+volumes:
+  mongo_data:

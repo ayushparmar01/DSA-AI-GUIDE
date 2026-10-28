@@ -1,0 +1,43 @@
+{
+  "name": "dsa-ai-guide",
+  "version": "1.0.0",
+  "description": "Production-Grade AI-Powered Adaptive DSA Learning Mentor Platform",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "node backend/src/server.js",
+    "backend": "npm run dev --workspace=backend",
+    "server": "npm run dev --workspace=backend",
+    "frontend": "npm run dev --workspace=frontend",
+    "client": "npm run dev --workspace=frontend",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "seed": "npm run seed --workspace=backend",
+    "test": "npm run test --workspace=backend",
+    "test:all": "npm run test --workspace=backend && pytest ai-service/tests",
+    "benchmark": "python scripts/evaluate_algorithms.py",
+    "build": "npm run build --workspace=frontend",
+    "ai:dev": "uvicorn app.main:app --app-dir ai-service --reload --port 8000",
+    "ai:test": "pytest ai-service/tests -v",
+    "ml:data": "python ai-service/app/ml/data/generate_dataset.py",
+    "ml:train": "python ai-service/app/ml/training/train_models.py",
+    "ml:predict": "python ai-service/app/ml/inference/predict.py"
+  },
+  "keywords": [
+    "dsa",
+    "ai-mentor",
+    "edtech",
+    "machine-learning",
+    "striver-sheet",
+    "leetcode",
+    "spaced-repetition",
+    "adaptive-learning"
+  ],
+  "author": "DSA AI Guide Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
